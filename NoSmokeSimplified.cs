@@ -39,7 +39,7 @@ namespace NoSmokeSimplified
         internal static ConfigEntry<bool> fe_hearth;
         internal static ConfigEntry<bool> fe_smelter;
         internal static ConfigEntry<bool> keepOnInRain;
-        //internal static ConfigEntry<bool> fe_oven;
+        internal static ConfigEntry<bool> fe_oven;
 
         private void Awake()
         {
@@ -53,7 +53,7 @@ namespace NoSmokeSimplified
             fe_smelter = Config.Bind<bool>("Really, I Want Smoke", "Smelter Enable Smoke", false, "Enable Smoke for Smelter.  This disables Smelter Stacking");
             fe_bonfire = Config.Bind<bool>("Really, I Want Smoke", "Bonfire Enable Smoke", false, "Enable Smoke for Bonefire");
             keepOnInRain = Config.Bind<bool>("General", "Keep on in Rain", true, "Keep items from going out in the rain");
-           // fe_oven = Config.Bind<bool>("Really, I Want Smoke", "Oven Enable Smoke", false, "Enable Smoke for Cooking Station.");
+            fe_oven = Config.Bind<bool>("Really, I Want Smoke", "Oven Enable Smoke", false, "Enable Smoke for Cooking Station.");
 
             if (!_configEnabled.Value)
                 return;

@@ -1,61 +1,57 @@
-﻿//using HarmonyLib;
+﻿using HarmonyLib;
 
-/////*
-//// * Purpose and Function
-//// *
-//// * Patch the cooking station routing of the game for ovens
-//// * run the native routine for the game
-//// * at the end look to see if smoke is enabled for the ove
-//// * find the child smokespawner using the game utils
-//// * see if game expects the fire to be lit
-//// * turn of smoke spawner if configured to be off
-//// *
-//// */
+///*
+// * Purpose and Function
+// *
+// * Patch the cooking station routing of the game for ovens
+// * run the native routine for the game
+// * at the end look to see if smoke is enabled for the ove
+// * find the child smokespawner using the game utils
+// * see if game expects the fire to be lit
+// * turn of smoke spawner if configured to be off
+// *
+// */
 
-//namespace NoSmokeSimplified.Patches;
+namespace NoSmokeSimplified.Patches;
 
-//internal class CookingStationPatch
-//{
-//    [HarmonyPatch(typeof(CookingStation), nameof(CookingStation.GetFuel))]
-//    private class CookingStationSmoke_Patch
+internal class CookingStationPatch
+{
+    [HarmonyPatch(typeof(CookingStation), nameof(CookingStation.UpdateVisual))]
+    private class CookingStationSmoke_Patch
 
-//    {
-//        //native functions of game
-//        private static float Postfix(CookingStation __instance)
-//        {
-//            //if (__instance.m_fireCheckPoints != null && __instance.m_fireCheckPoints.Length != 0)
+    {
+        //native functions of game
+        private static void Postfix(CookingStation __instance, ref bool fireLit)
+        {
+            if (Case.ConfigCheckGiveMeSmoke(__instance.name))
+            {
+                for (int i = 0; i < __instance.m_slots.Length; i++)
+                {
+                    string item;
+                    float num;
+                    CookingStation.Status status;
+                    __instance.GetSlot(i, out item, out num, out status);
+                    __instance.SetSlotVisual(i, item, fireLit, status);
+                }
+                if (__instance.m_useFuel)
+                {
+                    bool active = __instance.GetFuel() > 0f;
+                    if (__instance.m_haveFireObject)
+                    {
+                        __instance.m_haveFireObject.SetActive(fireLit);
+                    }
+                    if (__instance.m_haveFuelObject)
+                    {
+                        __instance.m_haveFuelObject.SetActive(active);
+                    }
+                }
+                //patch out the smoke if configured
 
-//            //{
-//            //    Transform[] fireCheckPoints = __instance.m_fireCheckPoints;
-//            //    for (int i = 0; i < fireCheckPoints.Length; i++)
-//            //    {
-//            //        if (!EffectArea.IsPointInsideArea(fireCheckPoints[i].position, EffectArea.Type.Burning, __instance.m_fireCheckRadius))
-//            //        {
-//            //            __result = false;
-//            //            return;
-//            //        }
-//            //    }
-//            //    __result = true;
-//            //}
-
-//            //__result = EffectArea.IsPointInsideArea(__instance.transform.position, EffectArea.Type.Burning, __instance.m_fireCheckRadius);
-
-//            //check smoke configured
-
-//            //check if fire is lit and turn off/on smoke
-
-//            if (Case.ConfigCheckGiveMeSmoke(__instance.name))
-//            {
-//                Utils.FindChild(__instance.transform, "CookingStation").gameObject.
-//                                                            GetComponent<SmokeSpawner>().enabled = false;
-                
-//            }
-//            else
-//                Utils.FindChild(__instance.transform, "CookingStation").gameObject.
-//                                    GetComponent<SmokeSpawner>().enabled = true;
-
-//            return  __instance.m_nview.GetZDO().GetFloat("fuel", 0f);
-       
-//        }
-//    }
-//}
+                if (Case.ConfigCheckGiveMeSmoke(__instance.name))
+                    Utils.FindChild(__instance.transform, "SmokeSpawner").gameObject.GetComponent<SmokeSpawner>().enabled = true;
+                else
+                    Utils.FindChild(__instance.transform, "SmokeSpawner").gameObject.GetComponent<SmokeSpawner>().enabled = false;
+            }
+        }
+    }
+}

@@ -72,6 +72,7 @@
     <Compile Include="NoSmokeSimplified.cs" />
     <Compile Include="Patches\Case.cs" />
     <Compile Include="Patches\CookingStationPatch.cs" />
+    <Compile Include="Patches\FermenterPatch.cs" />
     <Compile Include="Patches\FirePlacePatch.cs" />
     <Compile Include="Patches\SmelterPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
