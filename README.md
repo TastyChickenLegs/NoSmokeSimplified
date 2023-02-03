@@ -52,6 +52,14 @@ Start the game.
 
 ### Version Information
 
+1.0.2
+
+- fix for ovens null refrence.  Ovens can now be made smokeless
+
+1.0.1
+
+- bug in ovens and ovens removed until found
+
 
 1.0.0
 

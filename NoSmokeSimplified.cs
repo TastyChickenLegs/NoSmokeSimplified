@@ -20,7 +20,7 @@ namespace NoSmokeSimplified
         
         private readonly Harmony harmony = new Harmony("Tastychickenlegs.NoSmokeSimplified");
         internal const string ModName = "NoSmokeSimplified";
-        internal const string ModVersion = "1.0.0";
+        internal const string ModVersion = "1.0.2";
         internal const string Author = "TastyChickenLegs";
         private const string ModGUID = Author + "." + ModName;
         private static string ConfigFileName = ModGUID + ".cfg";

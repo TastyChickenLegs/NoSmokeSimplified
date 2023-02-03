@@ -23,8 +23,7 @@ internal class CookingStationPatch
         //native functions of game
         private static void Postfix(CookingStation __instance, ref bool fireLit)
         {
-            if (Case.ConfigCheckGiveMeSmoke(__instance.name))
-            {
+          
                 for (int i = 0; i < __instance.m_slots.Length; i++)
                 {
                     string item;
@@ -45,13 +44,15 @@ internal class CookingStationPatch
                         __instance.m_haveFuelObject.SetActive(active);
                     }
                 }
-                //patch out the smoke if configured
-
+            //patch out the smoke if configured
+            if (__instance.name.StartsWith("piece_oven(Clone)"))
+            {
                 if (Case.ConfigCheckGiveMeSmoke(__instance.name))
                     Utils.FindChild(__instance.transform, "SmokeSpawner").gameObject.GetComponent<SmokeSpawner>().enabled = true;
                 else
                     Utils.FindChild(__instance.transform, "SmokeSpawner").gameObject.GetComponent<SmokeSpawner>().enabled = false;
             }
         }
+        
     }
 }
